@@ -4,7 +4,7 @@
     "slug": "braza",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/braza_icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "braza",
@@ -13,12 +13,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+      "experiments": {
+      "typedRoutes": true
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/braza_icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true

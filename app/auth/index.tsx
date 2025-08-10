@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
+  
   TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../src/stores/authStore';
+import { Button,Text } from '../../src/components/ui';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('');
@@ -51,13 +53,16 @@ export default function AuthScreen() {
         style={styles.keyboardView}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>
+          <View>
+            <Image source={require("../../assets/braza_icon.png")} style={{height:130,width:130}}/>
+          </View>
+          <Text variant='h3'>
             {isLogin ? 'Entrar' : 'Criar Conta'}
           </Text>
-          <Text style={styles.subtitle}>
+          <Text >
             {isLogin 
               ? 'Entre com sua conta para continuar'
-              : 'Crie sua conta para começar'
+              : ''
             }
           </Text>
 
@@ -84,8 +89,7 @@ export default function AuthScreen() {
               autoCorrect={false}
             />
 
-            <TouchableOpacity
-              style={[styles.submitButton, isLoading && styles.disabledButton]}
+            <Button
               onPress={handleSubmit}
               disabled={isLoading}
             >
@@ -93,17 +97,17 @@ export default function AuthScreen() {
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Text style={styles.submitButtonText}>
-                  {isLogin ? 'Entrar' : 'Criar Conta'}
+                  {isLogin ? 'Entrar' : 'Registrar'}
                 </Text>
               )}
-            </TouchableOpacity>
+            </Button>
 
             <TouchableOpacity
               style={styles.toggleButton}
               onPress={toggleAuthMode}
               disabled={isLoading}
             >
-              <Text style={styles.toggleButtonText}>
+              <Text variant='caption'>
                 {isLogin 
                   ? 'Não tem uma conta? Criar conta'
                   : 'Já tem uma conta? Entrar'
@@ -129,6 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    alignItems:"center"
   },
   title: {
     fontSize: 32,

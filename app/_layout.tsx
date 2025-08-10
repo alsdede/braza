@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useAuthStore } from '../src/stores/authStore';
 import { useAppFonts } from '../src/hooks/useAppFonts';
+import colors from '../src/constants/colors';
 
 export default function RootLayout() {
   const { checkSession } = useAuthStore();
@@ -18,7 +19,7 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#F26419" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }

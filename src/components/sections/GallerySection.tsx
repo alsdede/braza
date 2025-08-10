@@ -75,6 +75,8 @@ export default function GallerySection({ section }: GallerySectionProps) {
 
   const renderCarouselLayout = () => {
     const itemWidth = screenWidth;
+    const containerHeight = 240; // Define altura do container
+    const itemHeight = containerHeight - 24; // Subtrai padding vertical (12 * 2)
 
     const renderCarouselItem = ({
       item,
@@ -83,28 +85,23 @@ export default function GallerySection({ section }: GallerySectionProps) {
       item: any;
       index: number;
     }) => {
-      console.log(
-        getSanityImageUrl(
-          { asset: item.asset, _type: "image" },
-          {
-            width: itemWidth * 2,
-            height: 300 * 2,
-            fit: "crop",
-          }
-        )
-      );
+ 
       return (
         <TouchableOpacity
-          style={[styles.carouselItem, { width: itemWidth }]}
+          style={[styles.carouselItem, { width: itemWidth, height: itemHeight }]}
           onPress={() => handleImagePress(item.linkTo)}
           activeOpacity={0.8}
         >
           <Image
             source={{
               uri:
-                getSanityImageUrl({ asset: item.asset, _type: "image" }) || "",
+                getSanityImageUrl({ asset: item.asset, _type: "image" }, {
+                  width: itemWidth * 2,
+                  height: itemHeight * 2,
+                  fit: "crop",
+                }) || "",
             }}
-            style={styles.carouselImage}
+            style={[styles.carouselImage, { height: itemHeight }]}
             resizeMode="cover"
           />
           {item.caption && (
@@ -119,10 +116,10 @@ export default function GallerySection({ section }: GallerySectionProps) {
     };
 
     return (
-      <View style={styles.carouselContainer}>
+      <View style={[styles.carouselContainer, { height: containerHeight }]}>
         <Carousel
           width={itemWidth}
-          height={300}
+          height={itemHeight}
           data={section.images}
           scrollAnimationDuration={300}
           mode="parallax"
@@ -261,6 +258,8 @@ const styles = StyleSheet.create({
   // Carousel Layout
   carouselContainer: {
     alignItems: "center",
+ 
+    paddingVertical:12,
   },
   carousel: {
     width: screenWidth,
@@ -277,7 +276,6 @@ const styles = StyleSheet.create({
   },
   carouselImage: {
     width: "100%",
-    height: 240,
   },
   carouselCaption: {
     position: "absolute",

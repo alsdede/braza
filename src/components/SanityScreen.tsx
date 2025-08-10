@@ -101,7 +101,7 @@ function PageRenderer({ page }: { page: Page }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+
     backgroundColor: "#fff",
   },
   title: {
@@ -132,7 +132,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     borderRadius: 4,
   },
-  sectionWrapper: {},
+  sectionWrapper: {
+
+  },
   sectionsContainer: {},
   error: {
     color: "red",

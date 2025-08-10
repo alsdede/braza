@@ -107,6 +107,16 @@ export async function getEstablishments(
 }
 
 /**
+ * Get establishment by ID
+ */
+export async function getEstablishmentById(
+  id: string
+): Promise<Establishment | null> {
+  const groqQuery = `*[_type == "establishment" && _id == "${id}"][0]`;
+  return query<Establishment>(groqQuery);
+}
+
+/**
  * Get featured establishments
  */
 export async function getFeaturedEstablishments(
@@ -173,6 +183,7 @@ export const sanityService = {
   getHomeContent,
   getNews,
   getEstablishments,
+  getEstablishmentById,
   getFeaturedEstablishments,
   getAdvertisements,
   searchContent,

@@ -180,13 +180,16 @@ export interface Establishment extends SanityDocument {
   name: string;
   slug: SanitySlug;
   description?: string;
+  detailedDescription?: any[]; // Rich text content
   category: 'restaurant' | 'bar' | 'cafe' | 'hotel' | 'shop' | 'attraction' | 'services' | 'entertainment' | 'other';
-  subCategory?: string; // Nova subcategoria com mais de 70 opções
-  featuredImage:SanityImage;
-  images?: SanityImage[];
-  location?: {
-    address?: string;
-    city?: string;
+  subCategory?: string;
+  logoImage?: SanityImage;
+  featuredImage?: SanityImage;
+  gallery?: SanityImage[];
+  location: {
+    address: string;
+    city: string;
+    postalCode?: string;
     country?: string;
     coordinates?: {
       lat: number;
@@ -195,6 +198,7 @@ export interface Establishment extends SanityDocument {
   };
   contact?: {
     phone?: string;
+    whatsapp?: string;
     email?: string;
     website?: string;
   };
@@ -202,18 +206,27 @@ export interface Establishment extends SanityDocument {
     facebook?: string;
     instagram?: string;
     twitter?: string;
+    linkedin?: string;
+    youtube?: string;
+    tiktok?: string;
   };
-  rating?: number;
-  priceRange?: 'budget' | 'moderate' | 'expensive' | 'luxury';
+  operatingHours?: {
+    day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+    openTime?: string;
+    closeTime?: string;
+    isClosed: boolean;
+  }[];
   features?: string[];
-  openingHours?: {
-    [key: string]: {
-      open: string;
-      close: string;
-      closed: boolean;
-    };
-  };
+  priceRange?: 'budget' | 'moderate' | 'expensive' | 'luxury';
+  averageRating?: number;
   isActive: boolean;
+  isFeatured: boolean;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Advertisement

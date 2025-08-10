@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Image } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 import { Establishment } from '../types/sanity';
 import { getEstablishments } from '../services/sanity';
 import { urlFor } from '../lib/sanity';
@@ -20,97 +21,95 @@ import { getSanityImageUrl } from '../utils/sanityImage';
 const { width } = Dimensions.get('window');
 
 interface EstablishmentListProps {
-  onEstablishmentPress?: (establishment: Establishment) => void;
+  // Remove onEstablishmentPress pois não precisamos mais
 }
 
 interface EstablishmentCardProps {
   establishment: Establishment;
-  onPress?: () => void;
 }
 
 const EstablishmentCard: React.FC<EstablishmentCardProps> = ({
   establishment,
-  onPress,
 }) => {
   const mainImage = establishment.featuredImage;
   const imageUrl = mainImage ? getSanityImageUrl(mainImage) : null;
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      <View style={styles.cardContent}>
-        {/* Imagem Principal */}
-        <View style={styles.imageContainer}>
-          {imageUrl ? (
-            <Image
-              source={{ uri: imageUrl }}
-              style={styles.establishmentImage}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={styles.placeholderImage}>
-              <MaterialIcons name="image" size={40} color="#ccc" />
-            </View>
-          )}
-        </View>
+    <Link href={`/establishment/${establishment._id}`} asChild>
+      <TouchableOpacity style={styles.card} activeOpacity={0.7}>
+        <View style={styles.cardContent}>
+          {/* Imagem Principal */}
+          <View style={styles.imageContainer}>
+            {imageUrl ? (
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.establishmentImage}
+                resizeMode="cover"
+              />
+            ) : (
+              <View style={styles.placeholderImage}>
+                <MaterialIcons name="image" size={40} color="#ccc" />
+              </View>
+            )}
+          </View>
 
-        {/* Informações do Estabelecimento */}
-        <View style={styles.infoContainer}>
-          <View style={styles.headerInfo}>
-            <Text style={styles.establishmentName} numberOfLines={2}>
-              {establishment.name}
-            </Text>
-            {/* {establishment.rating && (
-              <View style={styles.ratingContainer}>
-                <AntDesign name="star" size={14} color="#FFD700" />
-                <Text style={styles.ratingText}>
-                  {establishment.rating.toFixed(1)}
+          {/* Informações do Estabelecimento */}
+          <View style={styles.infoContainer}>
+            <View style={styles.headerInfo}>
+              <Text style={styles.establishmentName} numberOfLines={2}>
+                {establishment.name}
+              </Text>
+              {/* {establishment.rating && (
+                <View style={styles.ratingContainer}>
+                  <AntDesign name="star" size={14} color="#FFD700" />
+                  <Text style={styles.ratingText}>
+                    {establishment.rating.toFixed(1)}
+                  </Text>
+                </View>
+              )} */}
+            </View>
+
+            {/* Categoria e Subcategoria */}
+            <View style={styles.categoryContainer}>
+              <Text style={styles.categoryText}>
+                {establishment.category}
+                {establishment.subCategory && ` • ${establishment.subCategory}`}
+              </Text>
+            </View>
+
+            {/* Localização */}
+            {establishment.location?.address && (
+              <View style={styles.locationContainer}>
+                <MaterialIcons name="location-on" size={14} color="#666" />
+                <Text style={styles.locationText} numberOfLines={1}>
+                  {establishment.location.address}
                 </Text>
+              </View>
+            )}
+
+            {/* Tags/Características */}
+            {/* {establishment.features && establishment.features.length > 0 && (
+              <View style={styles.tagsContainer}>
+                {establishment.features.slice(0, 3).map((feature: string, index: number) => (
+                  <View key={index} style={styles.tag}>
+                    <Text style={styles.tagText}>{feature}</Text>
+                  </View>
+                ))}
+                {establishment.features.length > 3 && (
+                  <Text style={styles.moreTagsText}>
+                    +{establishment.features.length - 3}
+                  </Text>
+                )}
               </View>
             )} */}
           </View>
-
-          {/* Categoria e Subcategoria */}
-          <View style={styles.categoryContainer}>
-            <Text style={styles.categoryText}>
-              {establishment.category}
-              {establishment.subCategory && ` • ${establishment.subCategory}`}
-            </Text>
-          </View>
-
-          {/* Localização */}
-          {establishment.location?.address && (
-            <View style={styles.locationContainer}>
-              <MaterialIcons name="location-on" size={14} color="#666" />
-              <Text style={styles.locationText} numberOfLines={1}>
-                {establishment.location.address}
-              </Text>
-            </View>
-          )}
-
-          {/* Tags/Características */}
-          {/* {establishment.features && establishment.features.length > 0 && (
-            <View style={styles.tagsContainer}>
-              {establishment.features.slice(0, 3).map((feature: string, index: number) => (
-                <View key={index} style={styles.tag}>
-                  <Text style={styles.tagText}>{feature}</Text>
-                </View>
-              ))}
-              {establishment.features.length > 3 && (
-                <Text style={styles.moreTagsText}>
-                  +{establishment.features.length - 3}
-                </Text>
-              )}
-            </View>
-          )} */}
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Link>
   );
 };
 
-const EstablishmentList: React.FC<EstablishmentListProps> = ({
-  onEstablishmentPress,
-}) => {
+const EstablishmentList: React.FC<EstablishmentListProps> = () => {
   const [establishments, setEstablishments] = useState<Establishment[]>([]);
   const [filteredEstablishments, setFilteredEstablishments] = useState<Establishment[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -158,10 +157,7 @@ const EstablishmentList: React.FC<EstablishmentListProps> = ({
   }, [searchQuery, establishments]);
 
   const renderEstablishment = ({ item }: { item: Establishment }) => (
-    <EstablishmentCard
-      establishment={item}
-      onPress={() => onEstablishmentPress?.(item)}
-    />
+    <EstablishmentCard establishment={item} />
   );
 
   const renderHeader = () => (
